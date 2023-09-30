@@ -59,7 +59,7 @@ const Archive = () => {
           flexWrap: 'wrap',
           alignItems: 'center',
         }}>
-        {notes.length !== 0 ? (
+        {notes.length !== 0 && notes !== null ? (
           notes.map((note) => {
             return (
               <CardNote

@@ -1,10 +1,10 @@
 import { Box, Typography } from '@mui/material';
 import CardNote from '../components/CardNote';
 import { useEffect, useState } from 'react';
-import { getActiveNotes } from '../utils/lokal-data';
 import AddNoteButton from '../components/buttons/AddNoteButton';
 import SearchBar from '../components/SearchBar';
 import { useSearchParams } from 'react-router-dom';
+import { getActiveNotes, getUserLogged } from '../utils/network-data';
 
 const Home = () => {
   const [notes, setNotes] = useState([]);
@@ -12,20 +12,20 @@ const Home = () => {
 
   const query = searchParams.get('title');
 
-  const handleGetNotes = () => {
-    const notes = getActiveNotes();
+  const handleGetNotes = async () => {
+    const res = await getActiveNotes();
 
     if (query !== '' && query !== null) {
-      const result = notes.filter((note) =>
+      const result = res.data.filter((note) =>
         note.title.toLowerCase().includes(query.toLowerCase())
       );
 
-      console.log('search res =>', result);
+      // console.log('search res =>', result);
 
       return setNotes(result);
     }
 
-    return setNotes(notes);
+    return setNotes(res.data);
   };
 
   useEffect(() => {
@@ -61,7 +61,7 @@ const Home = () => {
           flexWrap: 'wrap',
           alignItems: 'center',
         }}>
-        {notes.length !== 0 ? (
+        {notes !== null ? (
           notes.map((note) => {
             return (
               <CardNote
