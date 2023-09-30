@@ -5,14 +5,15 @@ import { loginCtx } from '../../context/UserContext';
 import LogoutIcon from '@mui/icons-material/Logout';
 
 const LogoutButton = () => {
-  const { setIsLogin } = useContext(loginCtx);
+  const { setCurrentUser } = useContext(loginCtx);
   const navigate = useNavigate();
   const handleLogOut = () => {
     localStorage.removeItem('accessToken');
+    localStorage.removeItem('currentUser');
 
     navigate('/login');
 
-    setIsLogin(false);
+    setCurrentUser(null);
   };
   return (
     <Button

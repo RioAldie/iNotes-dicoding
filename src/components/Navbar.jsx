@@ -11,7 +11,7 @@ import LogoutButton from './buttons/LogoutButton';
 import ModeButton from './buttons/ModeButton';
 
 export default function Navbar() {
-  const { isLogin } = useContext(loginCtx);
+  const { currentUser } = useContext(loginCtx);
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
@@ -33,7 +33,11 @@ export default function Navbar() {
                 Arsip
               </Button>
             </Link>
-            {isLogin ? <LogoutButton /> : <LoginButton />}
+            {currentUser !== null ? (
+              <LogoutButton />
+            ) : (
+              <LoginButton />
+            )}
           </Box>
         </Toolbar>
       </AppBar>

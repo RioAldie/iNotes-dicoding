@@ -21,7 +21,7 @@ import PropTypes from 'prop-types';
 import { modeCtx } from './context/ModeContext';
 
 const App = () => {
-  const { isLogin } = useContext(loginCtx);
+  const { currentUser } = useContext(loginCtx);
   const { mode } = useContext(modeCtx);
 
   const theme = createTheme({
@@ -36,7 +36,7 @@ const App = () => {
     },
   });
   const RequireAuth = ({ children }) => {
-    if (isLogin) {
+    if (currentUser !== null) {
       return <>{children}</>;
     }
     return <Navigate to={'/login'} />;
@@ -45,6 +45,7 @@ const App = () => {
   RequireAuth.propTypes = {
     children: PropTypes.element,
   };
+
   return (
     <>
       <BrowserRouter>

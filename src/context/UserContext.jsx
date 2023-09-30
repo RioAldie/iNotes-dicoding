@@ -2,31 +2,21 @@ import { createContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { getAccessToken, getUserLogged } from '../utils/network-data';
 
-const token = getAccessToken();
+const user = JSON.parse(localStorage.getItem('currentUser'));
+
 const initialState = {
-  isLogin: token === null ? false : true,
+  currentUser: user !== null ? user : null,
 };
 
 export const loginCtx = createContext(initialState);
 
 const LoginCtxProvider = ({ children }) => {
-  const [isLogin, setIsLogin] = useState(initialState.isLogin);
+  const [currentUser, setCurrentUser] = useState(
+    initialState.currentUser
+  );
 
-  const handleGetUserLogged = async () => {
-    const user = await getUserLogged();
-
-    if (user.error === false) {
-      return setIsLogin(true);
-    }
-
-    return setIsLogin(false);
-  };
-
-  useEffect(() => {
-    handleGetUserLogged();
-  }, []);
   return (
-    <loginCtx.Provider value={{ isLogin, setIsLogin }}>
+    <loginCtx.Provider value={{ currentUser, setCurrentUser }}>
       {children}
     </loginCtx.Provider>
   );

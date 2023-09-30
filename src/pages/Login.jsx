@@ -1,6 +1,10 @@
 import { Box, Button, TextField, Typography } from '@mui/material';
 import useInput from '../hooks/useInput';
-import { login, putAccessToken } from '../utils/network-data';
+import {
+  getUserLogged,
+  login,
+  putAccessToken,
+} from '../utils/network-data';
 import { Link, useNavigate } from 'react-router-dom';
 import { useContext, useState } from 'react';
 import { loginCtx } from '../context/UserContext';
@@ -10,7 +14,7 @@ const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [email, onEmailChange] = useInput('');
   const [password, onPasswordChange] = useInput('');
-  const { setIsLogin } = useContext(loginCtx);
+  const { setCurrentUser } = useContext(loginCtx);
 
   const navigate = useNavigate();
 
@@ -22,7 +26,15 @@ const Login = () => {
 
     if (res.error === false) {
       putAccessToken(res.data.accessToken);
-      setIsLogin(true);
+      const user = await getUserLogged();
+
+      if (user.error === false) {
+        setCurrentUser(user.data);
+        localStorage.setItem(
+          'currentUser',
+          JSON.stringify(user.data)
+        );
+      }
 
       navigate('/');
     }
