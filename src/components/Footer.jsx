@@ -11,6 +11,7 @@ const Footer = () => {
         alignItems: 'center',
         justifyContent: 'center',
         marginTop: '200px',
+        color: '#fff',
       }}>
       iNotes Dicoding Submission
     </Box>

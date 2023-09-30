@@ -16,7 +16,6 @@ const LoginCtxProvider = ({ children }) => {
     const user = await getUserLogged();
 
     if (user.error === false) {
-      console.log(user);
       return setIsLogin(true);
     }
 

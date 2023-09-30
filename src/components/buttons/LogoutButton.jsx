@@ -2,6 +2,7 @@ import { Button } from '@mui/material';
 import React, { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { loginCtx } from '../../context/UserContext';
+import LogoutIcon from '@mui/icons-material/Logout';
 
 const LogoutButton = () => {
   const { setIsLogin } = useContext(loginCtx);
@@ -16,12 +17,11 @@ const LogoutButton = () => {
   return (
     <Button
       variant="contained"
-      color="warning"
       sx={{
-        bgcolor: '#fff',
-        color: '#FF0032',
+        marginLeft: '10px',
       }}
       onClick={() => handleLogOut()}>
+      <LogoutIcon />
       Keluar
     </Button>
   );

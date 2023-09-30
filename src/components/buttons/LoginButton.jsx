@@ -8,8 +8,7 @@ const LoginButton = () => {
       <Button
         variant="contained"
         sx={{
-          bgcolor: '#fff',
-          color: '#ff3d00',
+          marginLeft: '10px',
         }}>
         <AccountCircleIcon />
         Masuk

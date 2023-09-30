@@ -5,15 +5,20 @@ import AddNoteButton from '../components/buttons/AddNoteButton';
 import SearchBar from '../components/SearchBar';
 import { useSearchParams } from 'react-router-dom';
 import { getActiveNotes, getUserLogged } from '../utils/network-data';
+import Loading from '../components/Loading';
 
 const Home = () => {
   const [notes, setNotes] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const query = searchParams.get('title');
 
   const handleGetNotes = async () => {
-    const res = await getActiveNotes();
+    setIsLoading(true);
+    const res = await getActiveNotes().finally(() => {
+      setIsLoading(false);
+    });
 
     if (query !== '' && query !== null) {
       const result = res.data.filter((note) =>
@@ -35,6 +40,7 @@ const Home = () => {
   // console.log('notes =>', notes);
   return (
     <>
+      {isLoading && <Loading />}
       <Typography variant="h5" sx={{ marginTop: '150px' }}>
         Catatan Aktif
       </Typography>
@@ -61,7 +67,7 @@ const Home = () => {
           flexWrap: 'wrap',
           alignItems: 'center',
         }}>
-        {notes !== null ? (
+        {notes.length !== 0 ? (
           notes.map((note) => {
             return (
               <CardNote

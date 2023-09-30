@@ -18,29 +18,29 @@ import Signup from './pages/Signup';
 import { useContext } from 'react';
 import { loginCtx } from './context/UserContext';
 import PropTypes from 'prop-types';
-
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: '#ff3d00',
-    },
-    secondary: {
-      main: '#fff',
-    },
-    mode: 'dark',
-  },
-});
+import { modeCtx } from './context/ModeContext';
 
 const App = () => {
   const { isLogin } = useContext(loginCtx);
+  const { mode } = useContext(modeCtx);
+
+  const theme = createTheme({
+    palette: {
+      primary: {
+        main: '#ff3d00',
+      },
+      secondary: {
+        main: '#fff',
+      },
+      mode: mode,
+    },
+  });
   const RequireAuth = ({ children }) => {
     if (isLogin) {
       return <>{children}</>;
     }
     return <Navigate to={'/login'} />;
   };
-
-  console.log(isLogin);
 
   RequireAuth.propTypes = {
     children: PropTypes.element,

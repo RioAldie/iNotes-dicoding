@@ -165,6 +165,15 @@ async function deleteNote(id) {
 
   return { error: false, data: responseJson.data };
 }
+const showFormattedDate = (date) => {
+  const options = {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  };
+  return new Date(date).toLocaleDateString('id-ID', options);
+};
 
 export {
   getAccessToken,
@@ -179,4 +188,5 @@ export {
   archiveNote,
   unarchiveNote,
   deleteNote,
+  showFormattedDate,
 };

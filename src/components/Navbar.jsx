@@ -8,12 +8,13 @@ import LoginButton from './buttons/LoginButton';
 import { useContext } from 'react';
 import { loginCtx } from '../context/UserContext';
 import LogoutButton from './buttons/LogoutButton';
+import ModeButton from './buttons/ModeButton';
 
 export default function Navbar() {
   const { isLogin } = useContext(loginCtx);
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static" sx={{ backgroundColor: '#dd2c00' }}>
+      <AppBar position="static">
         <Toolbar>
           <Box sx={{ flexGrow: 1 }}>
             <Link to={'/'}>
@@ -25,12 +26,15 @@ export default function Navbar() {
               </Typography>
             </Link>
           </Box>
-          <Link to={'/archive'}>
-            <Button variant="outlined" color="secondary">
-              Arsip
-            </Button>
+          <Box>
+            <ModeButton />
+            <Link to={'/archive'}>
+              <Button variant="outlined" color="secondary">
+                Arsip
+              </Button>
+            </Link>
             {isLogin ? <LogoutButton /> : <LoginButton />}
-          </Link>
+          </Box>
         </Toolbar>
       </AppBar>
     </Box>
