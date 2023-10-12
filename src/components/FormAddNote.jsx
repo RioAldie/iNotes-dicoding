@@ -1,6 +1,6 @@
 import { Box, Button, TextField, Typography } from '@mui/material';
 import { useState } from 'react';
-import { addNote } from '../utils/lokal-data';
+import { addNote } from '../utils/network-data';
 import { useNavigate } from 'react-router-dom';
 
 const FormAddNote = () => {
@@ -9,19 +9,12 @@ const FormAddNote = () => {
 
   const navigate = useNavigate();
 
-  const handleGetInput = () => {
-    console.log('new note =>', {
-      title,
-      body,
-    });
+  const handleSaveNewNote = async () => {
+    const res = await addNote({ title, body });
 
-    handleSaveNewNote(title, body);
-
-    navigate('/');
-  };
-
-  const handleSaveNewNote = (title, body) => {
-    addNote({ title, body });
+    if (res.error === false) {
+      navigate('/');
+    }
   };
   return (
     <Box
@@ -43,7 +36,7 @@ const FormAddNote = () => {
         rows={4}
         onChange={(e) => setBody(e.target.value)}
       />
-      <Button variant="contained" onClick={() => handleGetInput()}>
+      <Button variant="contained" onClick={() => handleSaveNewNote()}>
         Simpan
       </Button>
     </Box>

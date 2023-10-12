@@ -1,20 +1,26 @@
 import { Box, Typography } from '@mui/material';
 import CardNote from '../components/CardNote';
 import { useEffect, useState } from 'react';
-import { getArchivedNotes } from '../utils/lokal-data';
+import { getArchivedNotes } from '../utils/network-data';
 import AddNoteButton from '../components/buttons/AddNoteButton';
 import { useSearchParams } from 'react-router-dom';
 import SearchBar from '../components/SearchBar';
+import Loading from '../components/Loading';
 
 const Archive = () => {
   const [notes, setNotes] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams('');
   const query = searchParams.get('title');
-  const handleGetNotes = () => {
-    const notes = getArchivedNotes();
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleGetNotes = async () => {
+    setIsLoading(true);
+    const res = await getArchivedNotes().finally(() =>
+      setIsLoading(false)
+    );
 
     if (query !== '' && query !== null) {
-      const result = notes.filter((note) =>
+      const result = res.data.filter((note) =>
         note.title.toLowerCase().includes(query.toLowerCase())
       );
 
@@ -23,16 +29,16 @@ const Archive = () => {
       return setNotes(result);
     }
 
-    return setNotes(notes);
+    return setNotes(res.data);
   };
 
   useEffect(() => {
     handleGetNotes();
   }, [query]);
 
-  // console.log('notes =>', notes);
   return (
     <>
+      {isLoading && <Loading />}
       <Typography variant="h5" sx={{ marginTop: '150px' }}>
         Catatan Arsip
       </Typography>

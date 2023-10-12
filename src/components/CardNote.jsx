@@ -3,8 +3,12 @@ import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import { showFormattedDate } from '../utils/network-data';
+import parser from 'html-react-parser';
 
 const CardNote = ({ id, title, body, createdAt }) => {
+  const date = showFormattedDate(createdAt);
+
   return (
     <Link to={`/${id}`}>
       <Card
@@ -13,16 +17,13 @@ const CardNote = ({ id, title, body, createdAt }) => {
           height: 250,
         }}>
         <CardContent>
-          <Typography
-            sx={{ fontSize: 14 }}
-            color="text.secondary"
-            gutterBottom>
+          <Typography color="text.primary" gutterBottom>
             {title}
           </Typography>
           <Typography sx={{ mb: 1.5 }} color="text.secondary">
-            {createdAt}
+            {date}
           </Typography>
-          <Typography variant="body2">{body}</Typography>
+          <Typography variant="body2">{parser(body)}</Typography>
         </CardContent>
       </Card>
     </Link>

@@ -1,31 +1,36 @@
 import { Box, Typography } from '@mui/material';
 import CardNote from '../components/CardNote';
 import { useEffect, useState } from 'react';
-import { getActiveNotes } from '../utils/lokal-data';
 import AddNoteButton from '../components/buttons/AddNoteButton';
 import SearchBar from '../components/SearchBar';
 import { useSearchParams } from 'react-router-dom';
+import { getActiveNotes, getUserLogged } from '../utils/network-data';
+import Loading from '../components/Loading';
 
 const Home = () => {
   const [notes, setNotes] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const query = searchParams.get('title');
 
-  const handleGetNotes = () => {
-    const notes = getActiveNotes();
+  const handleGetNotes = async () => {
+    setIsLoading(true);
+    const res = await getActiveNotes().finally(() => {
+      setIsLoading(false);
+    });
 
     if (query !== '' && query !== null) {
-      const result = notes.filter((note) =>
+      const result = res.data.filter((note) =>
         note.title.toLowerCase().includes(query.toLowerCase())
       );
 
-      console.log('search res =>', result);
+      // console.log('search res =>', result);
 
       return setNotes(result);
     }
 
-    return setNotes(notes);
+    return setNotes(res.data);
   };
 
   useEffect(() => {
@@ -35,6 +40,7 @@ const Home = () => {
   // console.log('notes =>', notes);
   return (
     <>
+      {isLoading && <Loading />}
       <Typography variant="h5" sx={{ marginTop: '150px' }}>
         Catatan Aktif
       </Typography>

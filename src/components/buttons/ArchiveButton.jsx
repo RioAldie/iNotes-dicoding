@@ -1,15 +1,17 @@
 import { Button } from '@mui/material';
 import ArchiveIcon from '@mui/icons-material/Archive';
 import { PropTypes } from 'prop-types';
-import { archiveNote } from '../../utils/lokal-data';
+import { archiveNote } from '../../utils/network-data';
 import { useNavigate } from 'react-router-dom';
 
 const ArchiveButton = ({ id }) => {
   const navigate = useNavigate();
-  const handleArchiveNote = () => {
-    archiveNote(id);
+  const handleArchiveNote = async () => {
+    const res = await archiveNote(id);
 
-    navigate('/');
+    if (res.error === false) {
+      navigate('/');
+    }
   };
   return (
     <Button

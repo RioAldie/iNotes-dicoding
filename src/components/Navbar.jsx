@@ -4,11 +4,17 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import { Link } from 'react-router-dom';
+import LoginButton from './buttons/LoginButton';
+import { useContext } from 'react';
+import { loginCtx } from '../context/UserContext';
+import LogoutButton from './buttons/LogoutButton';
+import ModeButton from './buttons/ModeButton';
 
 export default function Navbar() {
+  const { currentUser } = useContext(loginCtx);
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static" sx={{ backgroundColor: '#dd2c00' }}>
+      <AppBar position="static">
         <Toolbar>
           <Box sx={{ flexGrow: 1 }}>
             <Link to={'/'}>
@@ -20,11 +26,19 @@ export default function Navbar() {
               </Typography>
             </Link>
           </Box>
-          <Link to={'/archive'}>
-            <Button variant="outlined" color="secondary">
-              Arsip
-            </Button>
-          </Link>
+          <Box>
+            <ModeButton />
+            <Link to={'/archive'}>
+              <Button variant="outlined" color="secondary">
+                Arsip
+              </Button>
+            </Link>
+            {currentUser !== null ? (
+              <LogoutButton />
+            ) : (
+              <LoginButton />
+            )}
+          </Box>
         </Toolbar>
       </AppBar>
     </Box>
